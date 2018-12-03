@@ -15,6 +15,8 @@ You must have ANTs installed and on your PATH.
 
 ## Viewing results
 
+Example here with [ITK-SNAP](http://itksnap.org)
+
 ```
   itksnap -g fixed.nii.gz -o movingToFixedDeformed.nii.gz movingToFixed0Warp.nii.gz jacobian.nii.gz
 ```
