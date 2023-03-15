@@ -27,18 +27,18 @@ field as a grid.
 
 ## Intepretation
 
-The Jacobian is computed in the fixed (template) space using the forward warps. This is what you
-want if you need to compare deformations using VBM or other methods in the template space.
+The Jacobian is computed in the fixed (template) space using the forward warps.
 
-The Jacobian determinant is > 1 where the template is expanding to match the moving image. 
-In other words, where the moving image volume is greater than the fixed image volume. 
+The Jacobian determinant is > 1 where the template is expanding to match the moving image.
+In other words, where the moving image volume is greater than the fixed image volume.
 
-The Jacobian determinant is < 1 where the template is contracting to match the moving image. 
+The Jacobian determinant is < 1 where the template is contracting to match the moving image.
 In other words, where the moving image volume is less than the fixed image volume.
 
 In this example there is no global (affine) scaling. These are usually not included in Jacobian
-studies as we are usually more interested in local deformations. 
+studies as we are usually more interested in local deformations.
 
 In `antsCorticalThickness.sh`, the registration has affine and deformable stages, but the Jacobian
 is similarly calculated on the deformable stage only. It captures local volume differences after
-correcting for overall head size and shape. 
+correcting for overall head size and shape.
+
