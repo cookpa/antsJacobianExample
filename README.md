@@ -1,15 +1,21 @@
 # antsJacobianExample
 
-Example Jacobian computation from a simple test case using ANTs CreateJacobianDeterminantImage
+Example Jacobian computation from a simple test case using ANTs
+CreateJacobianDeterminantImage
+
+Updated to test different header direction matrices.
 
 ## Generating the warps and Jacobians
 
-Run:
+The script runs each example case in a separate directory. You can add more, just add
+fixed.nii.gz and moving.nii.gz.
+
+Examples
 
 ```
-  ./reg.sh
+  ./reg.sh .
+  ./reg.sh oblique
 ```
-
 You must have ANTs installed and on your PATH.
 
 
@@ -23,6 +29,19 @@ Example here with [ITK-SNAP](http://itksnap.org)
 
 You can customize the display to aid visualization, for example by viewing the deformation
 field as a grid.
+
+
+## Numerical evaluation (requires SimpleITK)
+
+Run
+
+```
+  ./evaluate.py .
+```
+
+This compares the predicted volume of each label in the moving image from the Jacobian in
+the fixed space and the fixed labels. It also compares the deformed moving image volume to
+the fixed image volume.
 
 
 ## Intepretation
@@ -41,4 +60,3 @@ studies as we are usually more interested in local deformations.
 In `antsCorticalThickness.sh`, the registration has affine and deformable stages, but the Jacobian
 is similarly calculated on the deformable stage only. It captures local volume differences after
 correcting for overall head size and shape.
-
