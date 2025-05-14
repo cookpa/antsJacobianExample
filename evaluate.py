@@ -2,6 +2,7 @@
 
 import SimpleITK as sitk
 import numpy as np
+import os
 import sys
 
 # File paths
@@ -10,7 +11,7 @@ fixed_path = f"{workdir}/fixed.nii.gz"
 moving_path = f"{workdir}/moving.nii.gz"
 deformed_path = f"{workdir}/movingToFixedDeformed.nii.gz"
 
-jacobian_paths = [f"{workdir}/jacobian_fd.nii.gz", f"{workdir}/jacobian_geom.nii.gz"]
+jacobian_paths = [f"{workdir}/ants_jacobian_det_fd.nii.gz", f"{workdir}/ants_jacobian_det_geom.nii.gz", f"{workdir}/itk_transform_local_jacobian_determinant.nii.gz", f"{workdir}/itk_detfilter_jacobian_determinant.nii.gz"]
 
 # Load images
 fixed_img = sitk.ReadImage(fixed_path)
@@ -29,6 +30,11 @@ voxel_volume = np.prod(fixed_img.GetSpacing())
 labels = [int(i) for i in np.unique(fixed) if i > 0]
 
 for jac_path in jacobian_paths:
+
+    # Skip files that don't exist, to not force users to build ITK
+    if not os.path.exists(jac_path):
+        print(f"Warning: {jac_path} does not exist. Skipping.")
+        continue
 
     jacobian_img = sitk.ReadImage(jac_path)
     jacobian = sitk.GetArrayFromImage(jacobian_img)
