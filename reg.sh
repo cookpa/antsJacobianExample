@@ -17,5 +17,5 @@ CreateJacobianDeterminantImage 3 ${inputDir}/movingToFixed0Warp.nii.gz ${inputDi
 CreateJacobianDeterminantImage 3 ${inputDir}/movingToFixed0Warp.nii.gz ${inputDir}/ants_jacobian_det_fd.nii.gz 0 0
 CreateJacobianDeterminantImage 3 ${inputDir}/movingToFixed0Warp.nii.gz ${inputDir}/ants_jacobian_logdet_fd.nii.gz 1 0
 
-# Output the full matrix
-CreateJacobianDeterminantImage 3 ${inputDir}/movingToFixed0Warp.nii.gz ${inputDir}/ants_jacobian_fd.nrrd 0 0 1
+# Output the full matrix - nii output requires latest ANTs
+CreateJacobianDeterminantImage 3 ${inputDir}/movingToFixed0Warp.nii.gz ${inputDir}/ants_jacobian_fd.nii.gz 0 0 1
