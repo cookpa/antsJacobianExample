@@ -31,6 +31,29 @@ You can customize the display to aid visualization, for example by viewing the d
 field as a grid.
 
 
+## Alternative computation methods
+
+ITK has a method to estimate the jacobian at a point, from the transform object.
+There's also a filter that produces a determinant image from a displacement
+transform. Both of these are implemented in the code in `itkJacobian/`, see the
+README in there.
+
+`You can also calculate the determinant with greedy:
+
+```
+/Applications/ITK-SNAP.app/Contents/bin/greedy \
+  -d 3 \
+  -r movingToFixed0Warp.nii.gz \
+  -ri NN \
+  -rf fixed.nii.gz \
+  -rm moving.nii.gz movingToFixedDeformed_greedy.nii.gz \
+  -rj greedy_jacobian_determinant.nii.gz
+```
+
+This will resample the moving image (to check transforms are correctly
+interpreted) and the jacobian determinant.
+
+
 ## Numerical evaluation (requires SimpleITK)
 
 Run
