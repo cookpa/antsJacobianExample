@@ -4,14 +4,22 @@ import SimpleITK as sitk
 import numpy as np
 import os
 import sys
+import csv
+import pandas as pd
 
 # File paths
-workdir=sys.argv[1]
+workdir = sys.argv[1]
 fixed_path = f"{workdir}/fixed.nii.gz"
 moving_path = f"{workdir}/moving.nii.gz"
 deformed_path = f"{workdir}/movingToFixedDeformed.nii.gz"
 
-jacobian_paths = [f"{workdir}/ants_jacobian_det_fd.nii.gz", f"{workdir}/ants_jacobian_det_geom.nii.gz", f"{workdir}/itk_transform_local_jacobian_determinant.nii.gz", f"{workdir}/itk_detfilter_jacobian_determinant.nii.gz"]
+jacobian_paths = [
+    f"{workdir}/ants_jacobian_det_fd.nii.gz",
+    f"{workdir}/ants_jacobian_det_geom.nii.gz",
+    f"{workdir}/itk_transform_local_jacobian_determinant.nii.gz",
+    f"{workdir}/itk_detfilter_jacobian_determinant.nii.gz",
+    f"{workdir}/greedy_jacobian_determinant.nii.gz"
+]
 
 # Load images
 fixed_img = sitk.ReadImage(fixed_path)
@@ -29,9 +37,10 @@ voxel_volume = np.prod(fixed_img.GetSpacing())
 # Evaluate for all non-zero labels
 labels = [int(i) for i in np.unique(fixed) if i > 0]
 
-for jac_path in jacobian_paths:
+# Store results
+rows = []
 
-    # Skip files that don't exist, to not force users to build ITK
+for jac_path in jacobian_paths:
     if not os.path.exists(jac_path):
         print(f"Warning: {jac_path} does not exist. Skipping.")
         continue
@@ -52,8 +61,8 @@ for jac_path in jacobian_paths:
         err_pred_truth = 100 * abs(jac_predicted_vol - ground_truth_vol) / ground_truth_vol if ground_truth_vol else 100
         err_deformed_truth = 100 * abs(deformed_vol - fixed_vol) / fixed_vol if fixed_vol else 100
 
-        results = {
-            "Jacobian File": jac_path,
+        result = {
+            "Jacobian File": os.path.basename(jac_path),
             "Label": label,
             "Fixed Volume (mm^3)": fixed_vol,
             "Moving Volume (mm^3)": ground_truth_vol,
@@ -63,6 +72,15 @@ for jac_path in jacobian_paths:
             "% Error (Deformed vs Truth)": err_deformed_truth
         }
 
-        # Print results separated by newline
-        print("\n".join([f"{key}: {value}" for key, value in results.items()]))
+        rows.append(result)
+
+        # Print
+        print("\n".join([f"{k}: {v}" for k, v in result.items()]))
         print("")
+
+# Write CSV
+df = pd.DataFrame(rows)
+csv_path = os.path.join(workdir, "jacobian_volume_comparison.csv")
+df.to_csv(csv_path, index=False)
+print(f"Results written to {csv_path}")
+
