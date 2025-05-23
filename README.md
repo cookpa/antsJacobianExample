@@ -13,7 +13,7 @@ fixed.nii.gz and moving.nii.gz.
 Examples
 
 ```
-  ./reg.sh .
+  ./reg.sh identity
   ./reg.sh oblique
 ```
 You must have ANTs installed and on your PATH.
