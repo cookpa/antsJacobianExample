@@ -38,7 +38,7 @@ There's also a filter that produces a determinant image from a displacement
 transform. Both of these are implemented in the code in `itkJacobian/`, see the
 README in there.
 
-`You can also calculate the determinant with greedy:
+You can also calculate the determinant with greedy:
 
 ```
 /Applications/ITK-SNAP.app/Contents/bin/greedy \
