@@ -59,7 +59,7 @@ interpreted) and the jacobian determinant.
 Run
 
 ```
-  ./evaluate.py .
+  ./evaluate.py identity
 ```
 
 This compares the predicted volume of each label in the moving image from the Jacobian in
