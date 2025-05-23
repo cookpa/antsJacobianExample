@@ -83,3 +83,6 @@ studies as we are usually more interested in local deformations.
 In `antsCorticalThickness.sh`, the registration has affine and deformable stages, but the Jacobian
 is similarly calculated on the deformable stage only. It captures local volume differences after
 correcting for overall head size and shape.
+
+While the scripts here compute the Jacobian in different ways for testing, the method used in `antsCorticalThickness.sh` is `CreateJacobianDeterminantImage`
+with the `geometric` option set to 1.
