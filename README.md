@@ -13,7 +13,7 @@ fixed.nii.gz and moving.nii.gz.
 Examples
 
 ```
-  ./reg.sh .
+  ./reg.sh identity
   ./reg.sh oblique
 ```
 You must have ANTs installed and on your PATH.
@@ -38,7 +38,7 @@ There's also a filter that produces a determinant image from a displacement
 transform. Both of these are implemented in the code in `itkJacobian/`, see the
 README in there.
 
-`You can also calculate the determinant with greedy:
+You can also calculate the determinant with greedy:
 
 ```
 /Applications/ITK-SNAP.app/Contents/bin/greedy \
@@ -59,7 +59,7 @@ interpreted) and the jacobian determinant.
 Run
 
 ```
-  ./evaluate.py .
+  ./evaluate.py identity
 ```
 
 This compares the predicted volume of each label in the moving image from the Jacobian in
@@ -83,3 +83,6 @@ studies as we are usually more interested in local deformations.
 In `antsCorticalThickness.sh`, the registration has affine and deformable stages, but the Jacobian
 is similarly calculated on the deformable stage only. It captures local volume differences after
 correcting for overall head size and shape.
+
+While the scripts here compute the Jacobian in different ways for testing, the method used in `antsCorticalThickness.sh` is `CreateJacobianDeterminantImage`
+with the `geometric` option set to 1.
