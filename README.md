@@ -85,4 +85,6 @@ is similarly calculated on the deformable stage only. It captures local volume d
 correcting for overall head size and shape.
 
 While the scripts here compute the Jacobian in different ways for testing, the method used in `antsCorticalThickness.sh` is `CreateJacobianDeterminantImage`
-with the `geometric` option set to 1.
+with the `geometric` option set to 1. If you have ants prior to 2.6.1, there is
+a bug affecting the non-geometric jacobians for oblique and non-axial images.
+The geometric calculation is not affected.
