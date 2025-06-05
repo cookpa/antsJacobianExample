@@ -1,7 +1,7 @@
 # antsJacobianExample
 
 Example Jacobian computation from a simple test case using ANTs
-CreateJacobianDeterminantImage
+CreateJacobianDeterminantImage.
 
 Updated to test different header direction matrices.
 
@@ -98,8 +98,8 @@ In other words, where the moving image volume is less than the fixed image volum
 
 The Jacobian determinant is a scalar value that describes the local volume change at a
 point in the image. It is therefore bounded to be positive, as volumes cannot be zero or
-negative under a diffeomorphic transform. It's also not symmetric, eg doubling of volume
-implies det(J) = 2, but halving of volume implies det(J) = 1/2 = 0.5.
+negative under a diffeomorphic transform. It's also not about thhe "middle" where det(J) =
+1, meaning no change in volume.
 
 Taking the logarithm of the determinant centers the values around zero and makes the
 distribution symmetric, which is often desirable for statistical analysis. If you are
@@ -107,6 +107,7 @@ looking at the log jacobian, then 0 means no volume change, > 0 means expansion,
 means contraction. For example, if det(J) = 1.5, indicating expansion of the template,
 then log(det(J)) = log(1.5) = 0.405. The corresponding contraction, det(J) = 1/1.5, gives
 log(det(J)) = log(1/1.5) = -0.405.
+
 
 ## Volume changes under affine transforms
 
@@ -123,3 +124,14 @@ While the scripts here compute the Jacobian in different ways for testing, the m
 with the `geometric` option set to 1. If you have ants prior to 2.6.1, there is
 a bug affecting the non-geometric jacobians for oblique and non-axial images.
 The geometric calculation is not affected.
+
+## The gradient matrix
+The full gradient matrix can be computed with
+```
+CreateJacobianDeterminantImage gradient_matrix.nii.gz movingToFixed0Warp.nii.gz 0 0 1
+```
+This was also unreliable prior to ANTs 2.6.1 for the reasons [documented
+here](https://github.com/ANTsX/ANTs/issues/1884#issuecomment-2920581849). It has not yet
+been fully validated. As of June 2025 I am mostly confident it is correct, but need
+confirmation using tensor reorientation and tractogaphy to be sure. Use with caution and
+please report any issues on the ANTsX GitHub issues page.
