@@ -32,7 +32,8 @@ moving = sitk.GetArrayFromImage(moving_img)
 deformed = sitk.GetArrayFromImage(deformed_img)
 
 # Voxel volume
-voxel_volume = np.prod(fixed_img.GetSpacing())
+fixed_voxel_volume = np.prod(fixed_img.GetSpacing())
+moving_voxel_volume = np.prod(moving_img.GetSpacing())
 
 # Evaluate for all non-zero labels
 labels = [int(i) for i in np.unique(fixed) if i > 0]
@@ -53,10 +54,10 @@ for jac_path in jacobian_paths:
         moving_mask = moving == label
         deformed_mask = deformed == label
 
-        jac_predicted_vol = np.sum(jacobian[fixed_mask]) * voxel_volume
-        deformed_vol = np.sum(deformed_mask) * voxel_volume
-        ground_truth_vol = np.sum(moving_mask) * voxel_volume
-        fixed_vol = np.sum(fixed_mask) * voxel_volume
+        jac_predicted_vol = np.sum(jacobian[fixed_mask]) * fixed_voxel_volume
+        deformed_vol = np.sum(deformed_mask) * fixed_voxel_volume
+        ground_truth_vol = np.sum(moving_mask) * moving_voxel_volume
+        fixed_vol = np.sum(fixed_mask) * fixed_voxel_volume
 
         err_pred_truth = 100 * abs(jac_predicted_vol - ground_truth_vol) / ground_truth_vol if ground_truth_vol else 100
         err_deformed_truth = 100 * abs(deformed_vol - fixed_vol) / fixed_vol if fixed_vol else 100

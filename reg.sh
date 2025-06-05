@@ -7,7 +7,7 @@ if [[ -z "$inputDir" ]]; then
   exit 1
 fi
 
-antsRegistration -d 3 -m Demons[ ${inputDir}/fixed.nii.gz , ${inputDir}/moving.nii.gz, 1 , 2 ] -t SyN[0.25, 2, 0] -f 2x1 -s 1x0vox -u 0 -c [10x5] -o [${inputDir}/movingToFixed,${inputDir}/movingToFixedDeformed.nii.gz] -v 1 -n NearestNeighbor
+antsRegistration -d 3 -m Demons[ ${inputDir}/fixed.nii.gz , ${inputDir}/moving.nii.gz, 1 , 3 ] -t SyN[0.25, 2, 0] -f 3x2x1 -s 2x1x0vox -u 0 -c [10x10x5] -o [${inputDir}/movingToFixed,${inputDir}/movingToFixedDeformed.nii.gz] -v 1 -n NearestNeighbor
 
 # the antsCorticalThickness way is geometric
 CreateJacobianDeterminantImage 3 ${inputDir}/movingToFixed0Warp.nii.gz ${inputDir}/ants_jacobian_det_geom.nii.gz 0 1

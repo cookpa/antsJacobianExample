@@ -5,6 +5,29 @@ CreateJacobianDeterminantImage
 
 Updated to test different header direction matrices.
 
+If you're here from the ANTs documentation and looking for a simple example of how
+Jacobians work, please run
+```
+./reg.sh identity
+```
+and look at the results in `identity/`. If you have SimpleITK, you can also get summary
+stats with
+```
+./evaluate.py identity
+```
+
+## Jacobian vs Jacobian determinant
+The Jacobian is a matrix that approximates the deformation in a small volume around a
+point: stretching, scaling, and/or shearing. The Jacobian determinant is a scalar value
+that describes the local volume change at a point in the image. It is the determinant of
+the Jacobian matrix.
+
+The term "Jacobian" and "Jacobian determinant" are often used interchangeably, but
+they are not the same thing. However, for brevity we will refer to the
+Jacobian determinant as the Jacobian. If we really mean the matrix, we will call it the
+"gradient matrix" as it is called in CreateJacobianDeterminantImage.
+
+
 ## Generating the warps and Jacobians
 
 The script runs each example case in a separate directory. You can add more, just add
@@ -38,20 +61,13 @@ There's also a filter that produces a determinant image from a displacement
 transform. Both of these are implemented in the code in `itkJacobian/`, see the
 README in there.
 
-You can also calculate the determinant with greedy:
-
+You can also calculate the determinant with greedy, eg
 ```
-/Applications/ITK-SNAP.app/Contents/bin/greedy \
-  -d 3 \
-  -r movingToFixed0Warp.nii.gz \
-  -ri NN \
-  -rf fixed.nii.gz \
-  -rm moving.nii.gz movingToFixedDeformed_greedy.nii.gz \
-  -rj greedy_jacobian_determinant.nii.gz
+./greedy.sh identity
 ```
 
 This will resample the moving image (to check transforms are correctly
-interpreted) and the jacobian determinant.
+interpreted) and compute the jacobian determinant.
 
 
 ## Numerical evaluation (requires SimpleITK)
@@ -77,8 +93,27 @@ In other words, where the moving image volume is greater than the fixed image vo
 The Jacobian determinant is < 1 where the template is contracting to match the moving image.
 In other words, where the moving image volume is less than the fixed image volume.
 
+
+## Jacobian vs log Jacobian
+
+The Jacobian determinant is a scalar value that describes the local volume change at a
+point in the image. It is therefore bounded to be positive, as volumes cannot be zero or
+negative under a diffeomorphic transform. It's also not symmetric, eg doubling of volume
+implies det(J) = 2, but halving of volume implies det(J) = 1/2 = 0.5.
+
+Taking the logarithm of the determinant centers the values around zero and makes the
+distribution symmetric, which is often desirable for statistical analysis. If you are
+looking at the log jacobian, then 0 means no volume change, > 0 means expansion, and < 0
+means contraction. For example, if det(J) = 1.5, indicating expansion of the template,
+then log(det(J)) = log(1.5) = 0.405. The corresponding contraction, det(J) = 1/1.5, gives
+log(det(J)) = log(1/1.5) = -0.405.
+
+## Volume changes under affine transforms
+
 In this example there is no global (affine) scaling. These are usually not included in Jacobian
-studies as we are usually more interested in local deformations.
+studies as we are usually more interested in local deformations. However, the global
+volume change is often interesting. This can be computed from the affine transform
+determinant, which you can see with `antsTransformInfo`.
 
 In `antsCorticalThickness.sh`, the registration has affine and deformable stages, but the Jacobian
 is similarly calculated on the deformable stage only. It captures local volume differences after
