@@ -18,7 +18,8 @@ jacobian_paths = [
     f"{workdir}/ants_jacobian_det_geom.nii.gz",
     f"{workdir}/itk_transform_local_jacobian_determinant.nii.gz",
     f"{workdir}/itk_detfilter_jacobian_determinant.nii.gz",
-    f"{workdir}/greedy_jacobian_determinant.nii.gz"
+    f"{workdir}/greedy_jacobian_determinant.nii.gz",
+    f"{workdir}/antspy_jacobian_det_pybased.nii.gz"
 ]
 
 # Load images

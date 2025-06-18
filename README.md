@@ -69,6 +69,11 @@ You can also calculate the determinant with greedy, eg
 This will resample the moving image (to check transforms are correctly
 interpreted) and compute the jacobian determinant.
 
+The ANTsPy "py_based" method can be evaluated with
+```
+./antspy_pybased.py identity
+```
+
 
 ## Numerical evaluation (requires SimpleITK)
 
